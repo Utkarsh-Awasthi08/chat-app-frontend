@@ -14,10 +14,12 @@ const ChatPage = () => {
     roomName,
     currentUser,
     connected,
+    loading,
     setConnected,
     setRoomName,
     setRoomId,
     setCurrentUser,
+    setLoading
   } = useChatContext();
   // console.log(roomId);
   // console.log(currentUser);
@@ -25,10 +27,10 @@ const ChatPage = () => {
 
   const navigate = useNavigate();
   useEffect(() => {
-    if (!connected) {
-      navigate("/join");
+    if (!loading && !connected && window.location.pathname === "/chat") {
+      navigate("/join", { replace: true });
     }
-  }, [connected, roomId, currentUser]);
+  }, [loading, connected, roomId, currentUser]);
 
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
@@ -136,14 +138,14 @@ const ChatPage = () => {
 
     // Filter out the room with given roomId
     const updatedRooms = storedRooms.filter((room) => room.roomId !== roomId);
-
+    toast.error("You have left the room");
     // Save back updated array
     localStorage.setItem("joinedRooms", JSON.stringify(updatedRooms));
     setConnected(false);
     setRoomId("");
     setRoomName("");
     setCurrentUser("");
-    navigate("/join");
+    navigate(-1);
   }
 
   return (
