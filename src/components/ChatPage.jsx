@@ -70,7 +70,7 @@ const ChatPage = () => {
   //subscribe
 
   useEffect(() => {
-    const sock = new SockJS(`${baseURL}/chat`);
+    const sock = new SockJS("https://chat-app-backend-3-lgwt.onrender.com/chat");
     const client = Stomp.over(sock);
 
     client.connect({}, () => {
